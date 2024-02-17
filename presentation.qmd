@@ -1,0 +1,119 @@
+---
+title: "Introduction to Deep Learning in Pytorch"
+author: "Damian Owerko"
+format: 
+    revealjs:
+        theme: dark
+        center: false
+        parallax-background-image: philly_blue.png
+        parallax-background-size: "2500px 1406px"
+        parallaxBackgroundHorizontal: 500
+        parallaxBackgroundVertical: 0
+#        css: custom.css
+        html-math-method: mathjax
+        html-table-processing: none
+        navigation-mode: vertical
+
+---
+## Outline
+::: {.hidden}
+{{< include preamble.qmd >}}
+:::
+
+1. 
+::: {.fragment .highlight-blue fragment-index=1}
+What is deep learning?
+:::
+1. 
+::: {.fragment .semi-fade-out fragment-index=1}
+Introduction to PyTorch
+:::
+1. 
+::: {.fragment .semi-fade-out fragment-index=1}
+Example: Wine Quality
+:::
+
+## Linear Regression
+::: {.incremental}
+- Dataset -- $\{ \bfx_i \in \reals^d, y_i \in \reals\}_i^N$ with $N$ samples
+- Regression model -- $y_i = \bfx_i^T \blue{\bfw} + \varepsilon_i$
+- Goal -- minimize the mean squared error
+$$ 
+\min_\bfw \frac{1}{N} ||y_i - \bfx_i^T \blue{\bfw} ||_2^2 
+$$
+:::
+
+## Gradient Descent
+
+![Gradient Descent on a Surface](https://miro.medium.com/v2/resize:fit:720/format:webp/1*47skUygd3tWf3yB9A10QHg.gif)
+
+
+## Gradient Descent (element-wise)
+
+::: {.incremental}
+- Goal: $\min_w f(w_1,w_2,...,w_d)$
+- Iteratively update $w_j$ in the direction of the negative derivative
+$$
+w_j \leftarrow w_j - \eta \frac{\partial f}{\partial w_j} f(w_1,w_2,...,w_d)
+$$
+- $\eta$ is a *step size* or *learning rate*
+:::
+
+## Gradient Descent (vectorized)
+::: {.incremental}
+- Goal: $\min_\bfw f(\bfw)$
+- Iteratively update $\bfw$ in the direction of the **negative gradient**
+$$
+\bfw \leftarrow \bfw - \eta \nabla f(\bfw)
+$$
+- $\eta$ is a *step size* or *learning rate*
+:::
+
+# Introduction to PyTorch
+
+## What is PyTorch?
+::: {.incremental}
+- Open source machine learning library
+- Computes gradients automatically
+- Computations can be run on a GPU
+:::
+
+## PyTorch Tensors
+::: {.fragment}
+Several ways to create a tensor.
+```python
+x = torch.tensor([1, 2, 3])
+y = torch.ones(3)
+z = torch.rand(3, 3)
+```
+:::
+::: {.fragment}
+We can perform operations on tensors.
+```python
+x + y
+x ** 2
+```
+:::
+::: {.fragment}
+Finally, we can compute gradients.
+```{python}
+#| echo: true
+import torch
+x = torch.tensor([1., 2., 3., 4.], requires_grad=True)
+f = x ** 2
+f.backward(torch.ones_like(x))
+x.grad
+```
+:::
+
+
+## PyTorch Tensors {auto-animate="true"}
+Several ways to create a tensor.
+
+What am I doing?
+
+
+## PyTorch Tensors {auto-animate="true"}
+What am I doing?
+
+Several ways to create a tensor.
