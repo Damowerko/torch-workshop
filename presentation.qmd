@@ -3,13 +3,13 @@ title: "Introduction to Deep Learning in Pytorch"
 author: "Damian Owerko"
 format: 
     revealjs:
-        theme: dark
+        theme: white
         center: false
         parallax-background-image: philly_blue.png
         parallax-background-size: "2500px 1406px"
         parallaxBackgroundHorizontal: 500
         parallaxBackgroundVertical: 0
-#        css: custom.css
+        # css: custom.css
         html-math-method: mathjax
         html-table-processing: none
         navigation-mode: vertical
@@ -19,28 +19,80 @@ format:
 ::: {.hidden}
 {{< include preamble.qmd >}}
 :::
-
-1. 
-::: {.fragment .highlight-blue fragment-index=1}
-What is deep learning?
-:::
-1. 
-::: {.fragment .semi-fade-out fragment-index=1}
-Introduction to PyTorch
-:::
-1. 
-::: {.fragment .semi-fade-out fragment-index=1}
-Example: Wine Quality
-:::
-
-## Linear Regression
 ::: {.incremental}
-- Dataset -- $\{ \bfx_i \in \reals^d, y_i \in \reals\}_i^N$ with $N$ samples
-- Regression model -- $y_i = \bfx_i^T \blue{\bfw} + \varepsilon_i$
-- Goal -- minimize the mean squared error
-$$ 
-\min_\bfw \frac{1}{N} ||y_i - \bfx_i^T \blue{\bfw} ||_2^2 
-$$
+1. Introduction to PyTorch
+2. What is "deep" learning?
+3. Example: Wine Quality -- Linear Regression
+4. Example: Fashion-MNIST -- Image Classification
+:::
+
+# Introduction to Pytorch
+
+## What is PyTorch?
+::: {.incremental}
+- Open source machine learning library
+- Computes gradients automatically
+- Computations can be run on a GPU
+:::
+
+## PyTorch Tensors
+::: {.fragment}
+Several ways to create a tensor.
+```python
+x = torch.tensor([1, 2, 3])
+y = torch.ones(3)
+z = torch.rand(3, 3) # 3 x 3 matrix
+```
+:::
+
+::: {.fragment}
+We can initialize tensors on GPU or move them betweeen CPU and GPU.
+```python
+y = torch.ones(3).cuda()
+y = torch.ones(3, device="cuda")
+y = y.cpu()
+```
+:::
+
+## Using PyTorch Tensors
+::: {.fragment}
+We can perform operations on tensors.
+```python
+x + y # addition
+x ** 2 # power
+z @ y # matrix multiplication
+```
+:::
+::: {.fragment}
+Finally, we can compute gradients.
+```{python}
+#| echo: true
+#| code-line-numbers: "|2|3|4|5"
+import torch
+x = torch.tensor([1., 2., 3., 4.], requires_grad=True)
+loss = (x ** 2).sum()
+loss.backward()
+x.grad
+```
+:::
+
+
+# What is deep learning?
+
+## Glossary
+::: {.incremental}
+- **Model**: a *parametrized* function $f(\bfx, \blue{W_1}, ..., \blue{W_n})$
+- **Loss**: a function $\calL(\blue{W_1},..., \blue{W_n})$ that we want to minimize
+- **Gradients**: $\nabla_{\blue{W_i}} \calL$, the derivatives of $\calL$ w.r.t $\blue{W_i}$
+- **Gradient descent**: using gradients to find better $\blue{W_i}$
+- **Backpropagation**: technique used to compute the gradients
+:::
+
+## Example: Linear Regression
+::: {.incremental}
+- **Dataset**: $\{ \bfx_i \in \reals^d, y_i \in \reals\}_i^N$ with $N$ samples
+- **Model**: $\hat{y}_i = f(\bfx_i, \blue{\bfW}) = \blue\bfW \bfx_i$
+- **Loss**: $\calL(\blue{\bfW}) \frac{1}{N} \sum_i^N (y_i - \haty_i)^2$
 :::
 
 ## Gradient Descent
@@ -68,52 +120,3 @@ $$
 $$
 - $\eta$ is a *step size* or *learning rate*
 :::
-
-# Introduction to PyTorch
-
-## What is PyTorch?
-::: {.incremental}
-- Open source machine learning library
-- Computes gradients automatically
-- Computations can be run on a GPU
-:::
-
-## PyTorch Tensors
-::: {.fragment}
-Several ways to create a tensor.
-```python
-x = torch.tensor([1, 2, 3])
-y = torch.ones(3)
-z = torch.rand(3, 3)
-```
-:::
-::: {.fragment}
-We can perform operations on tensors.
-```python
-x + y
-x ** 2
-```
-:::
-::: {.fragment}
-Finally, we can compute gradients.
-```{python}
-#| echo: true
-import torch
-x = torch.tensor([1., 2., 3., 4.], requires_grad=True)
-f = x ** 2
-f.backward(torch.ones_like(x))
-x.grad
-```
-:::
-
-
-## PyTorch Tensors {auto-animate="true"}
-Several ways to create a tensor.
-
-What am I doing?
-
-
-## PyTorch Tensors {auto-animate="true"}
-What am I doing?
-
-Several ways to create a tensor.
